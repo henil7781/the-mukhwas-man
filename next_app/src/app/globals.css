@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-royal-green: #064e3b;
+  --color-royal-gold: #d97706;
+  --color-royal-cream: #fffbeb;
+  --color-royal-dark: #022c22;
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+}
+
+@layer utilities {
+  .glass-nav {
+    background: rgba(255, 251, 235, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(217, 119, 6, 0.1);
+  }
+}
+
+body {
+  @apply bg-royal-cream text-royal-dark font-sans;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-serif;
+}

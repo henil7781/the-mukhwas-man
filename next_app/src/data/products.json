@@ -1,0 +1,306 @@
+[
+  {
+    "id": 1,
+    "name": "5-in-1 Royal Mix",
+    "description": "Our Bestseller! A perfect blend of 5 premium digestive mukhwas varieties in one pack. Inspired by tradition.",
+    "price": 399,
+    "category": "Digestive",
+    "image": "https://m.media-amazon.com/images/I/61upytlhuQL._AC_SX416_CB1169409_QL70_.jpg",
+    "isFeatured": true,
+    "badges": [
+      "Bestseller",
+      "Chandan Special"
+    ],
+    "texture": {
+      "sweetness": 3,
+      "crunch": 5,
+      "cooling": 3
+    },
+    "benefit": "All-in-One Digestion",
+    "ingredients": [
+      "Fennel",
+      "Dhana Dal",
+      "Sesame",
+      "Flax",
+      "Ajwain"
+    ],
+    "mood": "Dinner"
+  },
+  {
+    "id": 2,
+    "name": "Calcutta Meetha Paan",
+    "description": "The authentic taste of Calcutta Paan. Gulkand-rich, refreshing, and tobacco-free.",
+    "price": 349,
+    "category": "Sweet",
+    "image": "https://m.media-amazon.com/images/I/71mmDAaCiGL._AC_UL640_FMwebp_QL65_.jpg",
+    "badges": [
+      "Authentic",
+      "No-Spit"
+    ],
+    "texture": {
+      "sweetness": 5,
+      "crunch": 2,
+      "cooling": 5
+    },
+    "benefit": "Fresh Breath",
+    "ingredients": [
+      "Betel Leaf",
+      "Gulkand",
+      "Sweet Spices",
+      "Menthol"
+    ],
+    "mood": "Dinner"
+  },
+  {
+    "id": 3,
+    "name": "Dehydrated Mango Chews",
+    "description": "Tangy, spicy, and sweet dried mango slices. A modern fruity twist to traditional mukhwas.",
+    "price": 299,
+    "category": "Exotic",
+    "image": "https://m.media-amazon.com/images/I/41XeRd7zFdL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": true,
+    "badges": [
+      "Fruity",
+      "Tangy"
+    ],
+    "texture": {
+      "sweetness": 4,
+      "crunch": 1,
+      "cooling": 1
+    },
+    "benefit": "Cravings Killer",
+    "ingredients": [
+      "Dried Mango",
+      "Chili Powder",
+      "Salt",
+      "Sugar"
+    ],
+    "mood": "Snack"
+  },
+  {
+    "id": 4,
+    "name": "Punjabi Mukhwas Mix",
+    "description": "A robust, earthy blend popular in Punjab. Heavy on roasted fennel and sesame seeds.",
+    "price": 249,
+    "category": "Digestive",
+    "image": "https://m.media-amazon.com/images/I/413g-wSrAlL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": false,
+    "badges": [
+      "Roasted",
+      "Earthy"
+    ],
+    "texture": {
+      "sweetness": 1,
+      "crunch": 5,
+      "cooling": 1
+    },
+    "benefit": "Heavy Meal Aid",
+    "ingredients": [
+      "Fennel",
+      "Sesame Seeds",
+      "Coconut Flakes"
+    ],
+    "mood": "Dinner"
+  },
+  {
+    "id": 5,
+    "name": "Shahi Gulab (Rose)",
+    "description": "Premium fennel seeds coated with real rose petals and sugar. An aromatic delight.",
+    "price": 299,
+    "category": "Sweet",
+    "image": "https://m.media-amazon.com/images/I/81cYpnnHorL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": true,
+    "badges": [
+      "Aromatic",
+      "Floral"
+    ],
+    "texture": {
+      "sweetness": 4,
+      "crunch": 4,
+      "cooling": 2
+    },
+    "benefit": "Stress Relief",
+    "ingredients": [
+      "Fennel",
+      "Rose Petals",
+      "Sugar",
+      "Rose Water"
+    ],
+    "mood": "Relax"
+  },
+  {
+    "id": 6,
+    "name": "Hing-Amla Chatpata",
+    "description": "Tangy dried Indian gooseberry sourced from Pratapgarh, dusted with Asafoetida.",
+    "price": 249,
+    "category": "Digestive",
+    "image": "https://m.media-amazon.com/images/I/51waaByTV7L._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": false,
+    "badges": [
+      "Vitamin C",
+      "Sour"
+    ],
+    "texture": {
+      "sweetness": 1,
+      "crunch": 3,
+      "cooling": 1
+    },
+    "benefit": "Digestion Power",
+    "ingredients": [
+      "Dried Amla",
+      "Hing (Asafoetida)",
+      "Black Salt",
+      "Lemon"
+    ],
+    "mood": "Dinner"
+  },
+  {
+    "id": 7,
+    "name": "Pachak Jeera Goli",
+    "description": "Classic cumin-based digestive tablets. Salty, sour, and incredibly addictive.",
+    "price": 199,
+    "category": "Digestive",
+    "image": "https://m.media-amazon.com/images/I/71nR3qmKe3L._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": false,
+    "badges": [
+      "Classic",
+      "Salty"
+    ],
+    "texture": {
+      "sweetness": 1,
+      "crunch": 2,
+      "cooling": 1
+    },
+    "benefit": "Gas Relief",
+    "ingredients": [
+      "Cumin Powder",
+      "Dry Mango",
+      "Black Pepper",
+      "Salt"
+    ],
+    "mood": "Dinner"
+  },
+  {
+    "id": 8,
+    "name": "7-in-1 Superseed Mix",
+    "description": "A powerhouse blend of Flax, Pumpkin, Sunflower, Watermelon, Sesame, and Chia seeds.",
+    "price": 549,
+    "category": "Healthy",
+    "image": "https://m.media-amazon.com/images/I/71sSDMOmZUL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": false,
+    "badges": [
+      "Sugar-Free",
+      "Protein"
+    ],
+    "texture": {
+      "sweetness": 1,
+      "crunch": 5,
+      "cooling": 1
+    },
+    "benefit": "Energy Boost",
+    "ingredients": [
+      "Flax Seeds",
+      "Pumpkin Seeds",
+      "Chia Seeds",
+      "Sunflower Seeds"
+    ],
+    "mood": "Snack"
+  },
+  {
+    "id": 9,
+    "name": "Royal Gift Box (Set of 4)",
+    "description": "Handcrafted wooden box containing Rose, Paan, Jeera, and Superseeds. Perfect for weddings.",
+    "price": 1499,
+    "category": "Gifting",
+    "image": "https://m.media-amazon.com/images/I/71qhTSpWaxL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": true,
+    "badges": [
+      "Best Seller",
+      "Gift Ready"
+    ],
+    "texture": {
+      "sweetness": 3,
+      "crunch": 3,
+      "cooling": 3
+    },
+    "benefit": "Impress Guests",
+    "ingredients": [
+      "Assorted Variants"
+    ],
+    "mood": "Party"
+  },
+  {
+    "id": 10,
+    "name": "Oxidized Silver Pocket Tin",
+    "description": "Vintage-style intricately carved silver tin. Comes with 50g of Silver Coated Elaichi.",
+    "price": 899,
+    "category": "Gifting",
+    "image": "https://m.media-amazon.com/images/I/413g-wSrAlL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": false,
+    "badges": [
+      "Luxury",
+      "Reusable"
+    ],
+    "texture": {
+      "sweetness": 0,
+      "crunch": 0,
+      "cooling": 0
+    },
+    "benefit": "Style Statement",
+    "ingredients": [
+      "Silver",
+      "Brass"
+    ],
+    "mood": "Travel"
+  },
+  {
+    "id": 11,
+    "name": "Silver Coated Elaichi",
+    "description": "Premium cardamom pods coated in pure silver leaf. The ultimate royal refresher.",
+    "price": 899,
+    "category": "Premium",
+    "image": "https://m.media-amazon.com/images/I/413g-wSrAlL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": true,
+    "badges": [
+      "Luxury",
+      "Fresh Breath"
+    ],
+    "texture": {
+      "sweetness": 3,
+      "crunch": 4,
+      "cooling": 5
+    },
+    "benefit": "Oral Hygiene",
+    "ingredients": [
+      "Cardamom",
+      "Silver Leaf",
+      "Saffron"
+    ],
+    "mood": "Travel"
+  },
+  {
+    "id": 12,
+    "name": "Roasted Flaxseeds (Alsi)",
+    "description": "Crunchy, roasted flaxseeds lightly salted. High in Omega-3.",
+    "price": 299,
+    "category": "Healthy",
+    "image": "https://m.media-amazon.com/images/I/81CmmKAmuQL._AC_UL640_FMwebp_QL65_.jpg",
+    "isFeatured": false,
+    "badges": [
+      "Heart Health",
+      "Omega-3"
+    ],
+    "texture": {
+      "sweetness": 0,
+      "crunch": 5,
+      "cooling": 1
+    },
+    "benefit": "Cholesterol Control",
+    "ingredients": [
+      "Flaxseeds",
+      "Salt",
+      "Turmeric"
+    ],
+    "mood": "Snack"
+  }
+]
