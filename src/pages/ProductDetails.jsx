@@ -56,7 +56,7 @@ const ProductDetails = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
                     {/* Image */}
                     <div className="aspect-square bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 relative group">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                        <img src={product.image} alt={product.name} className="w-full h-full object-contain p-4" />
                         <div className="absolute top-4 left-4 flex flex-col space-y-2">
                             {product.badges?.map(badge => (
                                 <span key={badge} className="bg-white/90 backdrop-blur text-royal-dark text-xs font-bold px-3 py-1.5 rounded-md shadow-sm uppercase tracking-wide">
@@ -105,8 +105,8 @@ const ProductDetails = () => {
                                         key={weight}
                                         onClick={() => setSelectedWeight(weight)}
                                         className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${selectedWeight === weight
-                                                ? 'border-royal-gold bg-royal-gold/10 text-royal-dark ring-1 ring-royal-gold'
-                                                : 'border-gray-200 text-gray-500 hover:border-gray-300'
+                                            ? 'border-royal-gold bg-royal-gold/10 text-royal-dark ring-1 ring-royal-gold'
+                                            : 'border-gray-200 text-gray-500 hover:border-gray-300'
                                             }`}
                                     >
                                         {weight}

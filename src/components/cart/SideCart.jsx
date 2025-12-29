@@ -74,8 +74,8 @@ const SideCart = () => {
                                         key={item.id}
                                         className="flex space-x-4 bg-white p-4 rounded-xl shadow-sm border border-gray-50"
                                     >
-                                        <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                        <div className="w-20 h-20 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
+                                            <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1" />
                                         </div>
                                         <div className="flex-1 flex flex-col justify-between">
                                             <div>

@@ -32,12 +32,12 @@ const ProductCard = ({ product }) => {
             className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full"
         >
             {/* Image Container */}
-            <div className="relative aspect-square overflow-hidden bg-gray-50">
+            <div className="relative aspect-square overflow-hidden bg-white">
                 <Link to={`/product/${product.id}`}>
                     <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                        className="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
                 </Link>
 

@@ -234,11 +234,8 @@ const Checkout = () => {
                                                 paymentId: 'COD_' + Math.random().toString(36).substr(2, 9),
                                                 status: 'Pending (COD)'
                                             });
-                                            // Ideally we should use clearCart() from context here if exposed,
-                                            // but for now we rely on the fact that we are navigating away.
-                                            // If clearCart is available in useCart, we should use it.
-                                            // Looking at context usage at top: const { cartItems, cartTotal } = useCart();
-                                            // Need to destruct clearCart. Assuming it exists or adding it.
+                                            // 2. Clear Cart
+                                            clearCart();
 
                                             navigate('/order-success');
                                         }}
@@ -264,8 +261,8 @@ const Checkout = () => {
                                 {cartItems.map((item) => (
                                     <div key={item.id} className="flex justify-between items-start">
                                         <div className="flex space-x-3">
-                                            <div className="w-12 h-12 bg-gray-100 rounded-md overflow-hidden">
-                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                            <div className="w-12 h-12 bg-white rounded-md overflow-hidden border border-gray-100">
+                                                <img src={item.image} alt={item.name} className="w-full h-full object-contain p-0.5" />
                                             </div>
                                             <div>
                                                 <p className="text-sm font-medium text-gray-800 line-clamp-1">{item.name}</p>

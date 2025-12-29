@@ -58,6 +58,11 @@ export const CartProvider = ({ children }) => {
 
     const toggleCart = () => setIsCartOpen(!isCartOpen);
 
+    const clearCart = () => {
+        setCartItems([]);
+        localStorage.removeItem('mukhwasManCart');
+    };
+
     return (
         <CartContext.Provider value={{
             cartItems,
@@ -66,7 +71,8 @@ export const CartProvider = ({ children }) => {
             addToCart,
             removeFromCart,
             updateQuantity,
-            toggleCart
+            toggleCart,
+            clearCart
         }}>
             {children}
         </CartContext.Provider>
