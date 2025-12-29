@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useUser } from '../context/UserContext';
 import { mockBackend } from '../services/mockBackend';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Truck, Phone, CheckCircle, CreditCard, Lock } from 'lucide-react';
@@ -7,11 +8,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Checkout = () => {
     const { cartItems, cartTotal, clearCart } = useCart();
+    const { user } = useUser();
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
-        phone: '',
-        fullName: '',
+        phone: user?.phone || '',
+        fullName: user?.name || '',
         address: '',
         pincode: '',
         city: ''
@@ -47,6 +49,7 @@ const Checkout = () => {
                 // 1. Save Order to Backend (Simulated)
                 const newOrder = mockBackend.addOrder({
                     customerName: formData.fullName,
+                    email: user?.email || "guest@example.com", // Associate order with email
                     location: formData.city,
                     items: cartItems.map(item => ({
                         name: item.name,
@@ -224,6 +227,7 @@ const Checkout = () => {
                                         onClick={() => {
                                             const newOrder = mockBackend.addOrder({
                                                 customerName: formData.fullName,
+                                                email: user?.email || "guest@example.com", // Associate order with email
                                                 location: formData.city,
                                                 items: cartItems.map(item => ({
                                                     name: item.name,

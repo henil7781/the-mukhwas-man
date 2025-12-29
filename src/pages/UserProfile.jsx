@@ -24,7 +24,8 @@ const UserProfile = () => {
         const allOrders = mockBackend.getOrders();
         // Simple matching by name for this demo
         const userOrders = allOrders.filter(o =>
-            o.customerName && o.customerName.toLowerCase() === user.name.toLowerCase()
+            (o.email && o.email === user.email) || // Match by Email (Strong)
+            (o.customerName && o.customerName.toLowerCase() === user.name.toLowerCase()) // Match by Name (Weak fallback)
         );
         setMyOrders(userOrders);
 
@@ -117,8 +118,8 @@ const UserProfile = () => {
                                                     </div>
                                                     <div className="mt-2 md:mt-0">
                                                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                                                                order.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
-                                                                    'bg-yellow-100 text-yellow-800'
+                                                            order.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
+                                                                'bg-yellow-100 text-yellow-800'
                                                             }`}>
                                                             {order.status}
                                                         </span>
