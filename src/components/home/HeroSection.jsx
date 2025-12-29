@@ -48,12 +48,15 @@ const HeroSection = () => {
                         className="hidden md:block relative"
                     >
                         {/* Abstract representation of Mukhwas jar or scattered ingredients */}
-                        <div className="relative w-full aspect-square bg-gradient-to-br from-white/10 to-white/5 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/10 z-0">
-                            <div className="absolute inset-4 rounded-full border border-white/5 z-0"></div>
+                        {/* Product Banner */}
+                        <div className="relative w-full flex items-center justify-center z-10">
+                            {/* Glow Effect */}
+                            <div className="absolute inset-0 bg-royal-gold/20 blur-[80px] rounded-full scale-75"></div>
+
                             <img
-                                src="//bullionmukhwas.com/cdn/shop/files/xmas_1.png?v=1766566522"
-                                alt="Premium Mukhwas"
-                                className="w-[110%] h-[110%] object-contain drop-shadow-2xl z-10 hover:scale-105 transition-transform duration-500"
+                                src="https://bullionmukhwas.com/cdn/shop/files/xmas_1.png?v=1766566522"
+                                alt="Dizzle Premium Collection"
+                                className="relative w-full h-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500 rounded-xl"
                             />
                         </div>
                     </motion.div>
