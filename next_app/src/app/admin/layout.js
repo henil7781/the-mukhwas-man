@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, Package, Menu, X } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, Package, Menu, X, MessageSquare } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 
@@ -53,6 +53,12 @@ export default function AdminLayout({ children }) {
                     className={`flex items-center space-x-3 w-full p-3 rounded-lg font-medium transition-colors ${isActive('/admin/customers') ? 'bg-royal-green/20 text-royal-gold' : 'text-gray-300 hover:bg-white/5'}`}
                 >
                     <Users size={20} /> <span>Customers</span>
+                </Link>
+                <Link
+                    href="/admin/reviews"
+                    className={`flex items-center space-x-3 w-full p-3 rounded-lg font-medium transition-colors ${isActive('/admin/reviews') ? 'bg-royal-green/20 text-royal-gold' : 'text-gray-300 hover:bg-white/5'}`}
+                >
+                    <MessageSquare size={20} /> <span>Reviews</span>
                 </Link>
                 <Link
                     href="/admin/settings"

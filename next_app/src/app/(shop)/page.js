@@ -6,6 +6,10 @@ import products from '@/data/products.json';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
+import TrustBadges from '@/components/home/TrustBadges';
+import CrunchFactor from '@/components/home/CrunchFactor';
+import Testimonials from '@/components/home/Testimonials';
+
 export default function Home() {
   // Featured logic: Get 4 items
   const featuredProducts = products.filter(product => product.isFeatured).slice(0, 4);
@@ -14,8 +18,13 @@ export default function Home() {
     <div className="bg-royal-cream">
       <HeroSection />
 
+      {/* Trust Badges [NEW] */}
+
       {/* Mood Section */}
       <ShopByMood />
+
+      {/* Crunch Factor [NEW] */}
+      <CrunchFactor />
 
       {/* Featured Section */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,7 +46,10 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      <TrustBadges />
 
+      {/* Testimonials [NEW] */}
+      <Testimonials />
       {/* Value Props */}
       <section className="bg-royal-green text-royal-cream py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,6 +69,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
     </div>
   );
 }

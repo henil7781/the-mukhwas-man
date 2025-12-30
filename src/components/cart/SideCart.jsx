@@ -83,10 +83,23 @@ const SideCart = () => {
                                                 <p className="text-xs text-gray-500">{item.category}</p>
                                             </div>
                                             <div className="flex justify-between items-center mt-2">
-                                                <div className="flex items-center space-x-3 bg-gray-50 rounded-full px-2 py-1">
-                                                    <button onClick={() => updateQuantity(item.id, 'dec')} className="p-1 hover:text-royal-gold"><Minus className="w-3 h-3" /></button>
-                                                    <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
-                                                    <button onClick={() => updateQuantity(item.id, 'inc')} className="p-1 hover:text-royal-gold"><Plus className="w-3 h-3" /></button>
+                                                <div className="flex flex-col">
+                                                    <div className="flex items-center space-x-3 bg-gray-50 rounded-full px-2 py-1">
+                                                        <button onClick={() => updateQuantity(item.id, 'dec')} className="p-1 hover:text-royal-gold"><Minus className="w-3 h-3" /></button>
+                                                        <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
+                                                        <button
+                                                            onClick={() => updateQuantity(item.id, 'inc')}
+                                                            className="p-1 hover:text-royal-gold disabled:opacity-30 disabled:cursor-not-allowed"
+                                                            disabled={item.quantity >= (item.stock || 50)}
+                                                        >
+                                                            <Plus className="w-3 h-3" />
+                                                        </button>
+                                                    </div>
+                                                    {item.quantity >= (item.stock || 50) && (
+                                                        <span className="text-[10px] text-orange-600 font-medium mt-1 ml-1 bg-orange-50 px-2 py-1 rounded-md border border-orange-100 block">
+                                                            Heads up! We only have {item.stock} left.
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <div className="flex flex-col items-end">
                                                     <span className="font-bold text-royal-green">₹{item.price * item.quantity}</span>

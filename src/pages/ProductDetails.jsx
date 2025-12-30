@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import products from '../data/products.json';
+import { mockBackend } from '../services/mockBackend';
 import { Minus, Plus, ShoppingBag, ArrowLeft, Star, Heart, Leaf, ShieldCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const ProductDetails = () => {
     const { id } = useParams();
-    const product = products.find(p => p.id === parseInt(id));
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [selectedWeight, setSelectedWeight] = useState('100g'); // Default weight
     const { addToCart } = useCart();
+
+    useEffect(() => {
+        // Fetch product from mockBackend (which respects Admin updates)
+        const inventory = mockBackend.getInventory();
+        const foundProduct = inventory.find(p => p.id === parseInt(id));
+        setProduct(foundProduct || null);
+        setLoading(false);
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="pt-32 text-center min-h-screen">
+                <p className="text-gray-500">Loading product details...</p>
+            </div>
+        );
+    }
 
     if (!product) {
         return (
@@ -29,19 +46,27 @@ const ProductDetails = () => {
     };
 
     const currentPrice = getPrice();
+    const stock = product.stock !== undefined ? product.stock : 50; // Use live stock or default
 
     const handleQuantity = (type) => {
-        if (type === 'inc') setQuantity(q => q + 1);
+        if (type === 'inc') {
+            if (quantity < stock) {
+                setQuantity(q => q + 1);
+            }
+        }
         if (type === 'dec' && quantity > 1) setQuantity(q => q - 1);
     };
 
     const handleAdd = () => {
+        if (quantity > stock) return; // Prevent adding if somehow quantity > stock
+
         // Create a variation item to add
         const itemToAdd = {
             ...product,
             id: `${product.id}-${selectedWeight}`, // Unique ID for variation
             name: `${product.name} (${selectedWeight})`,
-            price: currentPrice
+            price: currentPrice,
+            stock: stock
         };
         addToCart(itemToAdd, quantity);
     };
@@ -130,23 +155,39 @@ const ProductDetails = () => {
                         )}
 
                         {/* Add to Cart Actions */}
-                        <div className="flex items-center space-x-6 mt-auto">
-                            <div className="flex items-center border border-gray-300 rounded-full bg-white">
-                                <button onClick={() => handleQuantity('dec')} className="p-3 hover:text-royal-gold transition-colors">
-                                    <Minus className="w-4 h-4" />
-                                </button>
-                                <span className="w-12 text-center font-medium">{quantity}</span>
-                                <button onClick={() => handleQuantity('inc')} className="p-3 hover:text-royal-gold transition-colors">
-                                    <Plus className="w-4 h-4" />
+                        <div className="flex flex-col space-y-3 mt-auto">
+                            {stock < 10 && (
+                                <p className="text-red-600 text-sm font-bold animate-pulse">
+                                    Only {stock} left in stock!
+                                </p>
+                            )}
+                            <div className="flex items-center space-x-6">
+                                <div className="flex items-center border border-gray-300 rounded-full bg-white">
+                                    <button
+                                        onClick={() => handleQuantity('dec')}
+                                        className="p-3 hover:text-royal-gold transition-colors disabled:opacity-50"
+                                        disabled={quantity <= 1}
+                                    >
+                                        <Minus className="w-4 h-4" />
+                                    </button>
+                                    <span className="w-12 text-center font-medium">{quantity}</span>
+                                    <button
+                                        onClick={() => handleQuantity('inc')}
+                                        className="p-3 hover:text-royal-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        disabled={quantity >= stock}
+                                    >
+                                        <Plus className="w-4 h-4" />
+                                    </button>
+                                </div>
+                                <button
+                                    onClick={handleAdd}
+                                    disabled={stock === 0}
+                                    className="flex-1 bg-royal-green text-white px-8 py-3 rounded-full font-medium hover:bg-royal-dark transition-all transform active:scale-95 shadow-lg shadow-royal-green/30 flex items-center justify-center space-x-2 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:shadow-none"
+                                >
+                                    <ShoppingBag className="w-5 h-5" />
+                                    <span>{stock === 0 ? 'Out of Stock' : `Add Pack - ₹${currentPrice * quantity}`}</span>
                                 </button>
                             </div>
-                            <button
-                                onClick={handleAdd}
-                                className="flex-1 bg-royal-green text-white px-8 py-3 rounded-full font-medium hover:bg-royal-dark transition-all transform active:scale-95 shadow-lg shadow-royal-green/30 flex items-center justify-center space-x-2"
-                            >
-                                <ShoppingBag className="w-5 h-5" />
-                                <span>Add Pack - ₹{currentPrice * quantity}</span>
-                            </button>
                         </div>
 
                         <p className="text-center text-xs text-gray-400 mt-4 flex items-center justify-center">

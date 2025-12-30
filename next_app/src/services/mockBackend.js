@@ -2,16 +2,14 @@ import products from '../data/products.json';
 
 // Initial Inventory Data - Populated from products.json
 const INITIAL_INVENTORY = products.map(p => ({
-    id: p.id,
-    name: p.name,
-    stock: 50, // Default stock
-    lowStockThreshold: 10,
-    price: p.price
+    ...p,
+    stock: p.stock !== undefined ? p.stock : 50, // Use JSON stock or default
+    lowStockThreshold: 10
 }));
 
 const STORAGE_KEYS = {
     ORDERS: 'mukhwas_orders',
-    INVENTORY: 'mukhwas_inventory',
+    INVENTORY: 'mukhwas_inventory_v4',
 };
 
 export const mockBackend = {
@@ -123,25 +121,33 @@ export const mockBackend = {
 
         const storedInventory = JSON.parse(stored);
 
-        // 2. Sync Logic: Check for new products in json that are NOT in storage
+        // 2. Sync Logic: Merge updates from json into storage
+        // This ensures if we update prices/stock in code, the user sees it even if they have old LS data.
         let hasChanges = false;
-        const syncedInventory = [...storedInventory];
 
-        INITIAL_INVENTORY.forEach(newItem => {
-            const exists = storedInventory.find(existing => existing.id === newItem.id);
-            if (!exists) {
-                syncedInventory.push(newItem);
+        // Map stored items for easy lookup
+        const storedMap = new Map(storedInventory.map(item => [item.id, item]));
+
+        const syncedInventory = INITIAL_INVENTORY.map(newItem => {
+            const existing = storedMap.get(newItem.id);
+            if (existing) {
+                // Merge existing (to keep dynamic stock potentially) BUT force update baseline fields
+                // Here we prioritize JSON for static fields, but we might want to keep 'stock' if it was decremented?
+                return {
+                    ...existing,
+                    ...newItem, // Apply JSON updates (name, price, image, etc)
+                    stock: existing.stock // Preserve stock (or use complex logic if needed)
+                };
+            } else {
                 hasChanges = true;
+                return newItem;
             }
         });
 
-        // 3. If we added new items, save back to storage
-        if (hasChanges) {
-            localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(syncedInventory));
-            return syncedInventory;
-        }
-
-        return storedInventory;
+        // 3. Always save the synced version to ensure fields are up to date
+        // (Simpler than checking hasChanges diffs for every field)
+        localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(syncedInventory));
+        return syncedInventory;
     },
 
     updateProduct: (id, updates) => {

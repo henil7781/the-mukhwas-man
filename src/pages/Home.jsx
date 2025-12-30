@@ -6,6 +6,10 @@ import products from '../data/products.json';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import CrunchFactor from '../components/home/CrunchFactor';
+import TrustBadges from '../components/home/TrustBadges';
+import Testimonials from '../components/home/Testimonials';
+
 const Home = () => {
     const featuredProducts = products.filter(product => product.isFeatured).slice(0, 4);
 
@@ -16,8 +20,11 @@ const Home = () => {
             {/* Mood Section [NEW] */}
             <ShopByMood />
 
+            {/* Crunch Factor [NEW] */}
+            <CrunchFactor />
+
             {/* Featured Section */}
-            <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="pt-24 pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <span className="text-royal-gold font-semibold tracking-wider uppercase text-sm">Our Bestsellers</span>
                     <h2 className="font-serif text-4xl font-bold text-royal-dark mt-2 mb-4">Royal Selections</h2>
@@ -36,6 +43,11 @@ const Home = () => {
                     </Link>
                 </div>
             </section>
+
+            <TrustBadges />
+
+            {/* Testimonials [NEW] */}
+            <Testimonials />
 
             {/* Value Props */}
             <section className="bg-royal-green text-royal-cream py-20">

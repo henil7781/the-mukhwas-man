@@ -36,19 +36,27 @@ const ProductDetails = () => {
     };
 
     const currentPrice = getPrice();
+    const stock = product.stock || 50; // Default stock if not provided
 
     const handleQuantity = (type) => {
-        if (type === 'inc') setQuantity(q => q + 1);
+        if (type === 'inc') {
+            if (quantity < stock) {
+                setQuantity(q => q + 1);
+            }
+        }
         if (type === 'dec' && quantity > 1) setQuantity(q => q - 1);
     };
 
     const handleAdd = () => {
+        if (quantity > stock) return;
+
         // Create a variation item to add
         const itemToAdd = {
             ...product,
             id: `${product.id}-${selectedWeight}`, // Unique ID for variation
             name: `${product.name} (${selectedWeight})`,
-            price: currentPrice
+            price: currentPrice,
+            stock: stock
         };
         addToCart(itemToAdd, quantity);
     };
@@ -140,23 +148,39 @@ const ProductDetails = () => {
                         )}
 
                         {/* Add to Cart Actions */}
-                        <div className="flex items-center space-x-6 mt-auto">
-                            <div className="flex items-center border border-gray-300 rounded-full bg-white">
-                                <button onClick={() => handleQuantity('dec')} className="p-3 hover:text-royal-gold transition-colors">
-                                    <Minus className="w-4 h-4" />
-                                </button>
-                                <span className="w-12 text-center font-medium">{quantity}</span>
-                                <button onClick={() => handleQuantity('inc')} className="p-3 hover:text-royal-gold transition-colors">
-                                    <Plus className="w-4 h-4" />
+                        <div className="flex flex-col space-y-3 mt-auto">
+                            {stock < 10 && (
+                                <p className="text-red-600 text-sm font-bold animate-pulse">
+                                    Only {stock} left in stock!
+                                </p>
+                            )}
+                            <div className="flex items-center space-x-6">
+                                <div className="flex items-center border border-gray-300 rounded-full bg-white">
+                                    <button
+                                        onClick={() => handleQuantity('dec')}
+                                        className="p-3 hover:text-royal-gold transition-colors disabled:opacity-50"
+                                        disabled={quantity <= 1}
+                                    >
+                                        <Minus className="w-4 h-4" />
+                                    </button>
+                                    <span className="w-12 text-center font-medium">{quantity}</span>
+                                    <button
+                                        onClick={() => handleQuantity('inc')}
+                                        className="p-3 hover:text-royal-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        disabled={quantity >= stock}
+                                    >
+                                        <Plus className="w-4 h-4" />
+                                    </button>
+                                </div>
+                                <button
+                                    onClick={handleAdd}
+                                    disabled={stock === 0}
+                                    className="flex-1 bg-royal-green text-white px-8 py-3 rounded-full font-medium hover:bg-royal-dark transition-all transform active:scale-95 shadow-lg shadow-royal-green/30 flex items-center justify-center space-x-2 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:shadow-none"
+                                >
+                                    <ShoppingBag className="w-5 h-5" />
+                                    <span>{stock === 0 ? 'Out of Stock' : `Add Pack - ₹${currentPrice * quantity}`}</span>
                                 </button>
                             </div>
-                            <button
-                                onClick={handleAdd}
-                                className="flex-1 bg-royal-green text-white px-8 py-3 rounded-full font-medium hover:bg-royal-dark transition-all transform active:scale-95 shadow-lg shadow-royal-green/30 flex items-center justify-center space-x-2"
-                            >
-                                <ShoppingBag className="w-5 h-5" />
-                                <span>Add Pack - ₹{currentPrice * quantity}</span>
-                            </button>
                         </div>
 
                         <p className="text-center text-xs text-gray-400 mt-4 flex items-center justify-center">

@@ -5,10 +5,20 @@ import { motion } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 
 const ProductCard = ({ product }) => {
-    const { addToCart } = useCart();
+    const { addToCart, cartItems } = useCart();
+
+    const stock = product.stock !== undefined ? product.stock : 50;
+    const inCart = cartItems.find(item => item.id === product.id)?.quantity || 0;
 
     const handleAddToCart = (e) => {
         e.preventDefault();
+        if (stock === 0) return;
+
+        if (inCart >= stock) {
+            alert(`Sorry, you have already added the maximum available quantity (${stock}) for this item.`);
+            return;
+        }
+
         addToCart(product);
     };
 
@@ -29,11 +39,11 @@ const ProductCard = ({ product }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full"
+            className={`group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full ${stock === 0 ? 'grayscale opacity-75' : ''}`}
         >
             {/* Image Container */}
             <div className="relative aspect-square overflow-hidden bg-white">
-                <Link to={`/product/${product.id}`}>
+                <Link to={`/product/${product.id}`} className={stock === 0 ? 'pointer-events-none' : ''}>
                     <img
                         src={product.image}
                         alt={product.name}
@@ -42,18 +52,24 @@ const ProductCard = ({ product }) => {
                 </Link>
 
                 {/* Category Badge */}
-                <div className="absolute top-3 left-3">
+                <div className="absolute top-3 left-3 flex flex-col space-y-1">
                     <span className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide border border-white/50 backdrop-blur-sm shadow-sm ${getCategoryColor(product.category)}`}>
                         {product.category}
                     </span>
+                    {stock === 0 && (
+                        <span className="text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide bg-gray-800 text-white shadow-sm">
+                            Sold Out
+                        </span>
+                    )}
                 </div>
 
                 {/* Quick Add */}
                 <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
                     <button
                         onClick={handleAddToCart}
-                        className="bg-white text-royal-dark p-2.5 rounded-full shadow-lg hover:bg-royal-gold hover:text-white transition-colors border border-gray-100"
-                        title="Add to Cart"
+                        disabled={stock === 0}
+                        className={`p-2.5 rounded-full shadow-lg transition-colors border border-gray-100 ${stock === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-royal-dark hover:bg-royal-gold hover:text-white'}`}
+                        title={stock === 0 ? "Out of Stock" : "Add to Cart"}
                     >
                         <ShoppingBag className="w-4 h-4" />
                     </button>
@@ -62,7 +78,7 @@ const ProductCard = ({ product }) => {
 
             {/* Content */}
             <div className="p-4 flex-1 flex flex-col">
-                <Link to={`/product/${product.id}`}>
+                <Link to={`/product/${product.id}`} className={stock === 0 ? 'pointer-events-none' : ''}>
                     <h3 className="font-serif text-lg font-bold text-royal-dark mb-1 group-hover:text-royal-gold transition-colors truncate">
                         {product.name}
                     </h3>
@@ -99,9 +115,10 @@ const ProductCard = ({ product }) => {
                     <span className="font-bold text-lg text-royal-green">₹{product.price}</span>
                     <button
                         onClick={handleAddToCart}
-                        className="text-xs font-bold text-royal-gold uppercase tracking-wider hover:underline"
+                        disabled={stock === 0}
+                        className={`text-xs font-bold uppercase tracking-wider ${stock === 0 ? 'text-gray-400 cursor-not-allowed' : 'text-royal-gold hover:underline'}`}
                     >
-                        Add
+                        {stock === 0 ? 'Sold Out' : (inCart >= stock ? 'Max Added' : 'Add')}
                     </button>
                 </div>
             </div>

@@ -29,17 +29,33 @@ export const CartProvider = ({ children }) => {
     const addToCart = (product, quantity = 1) => {
         setCartItems(prevItems => {
             const existingItem = prevItems.find(item => item.id === product.id);
+            // Default to high stock if not specified (e.g. 50)
+            const availableStock = product.stock !== undefined ? product.stock : 50;
+
             if (existingItem) {
+                const newQuantity = existingItem.quantity + quantity;
+                if (newQuantity > availableStock) {
+                    // Clamp to max stock
+                    return prevItems.map(item =>
+                        item.id === product.id
+                            ? { ...item, quantity: availableStock }
+                            : item
+                    );
+                }
                 return prevItems.map(item =>
                     item.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity }
+                        ? { ...item, quantity: newQuantity }
                         : item
                 );
             } else {
+                if (quantity > availableStock) {
+                    // Clamp to max stock
+                    return [...prevItems, { ...product, quantity: availableStock }];
+                }
                 return [...prevItems, { ...product, quantity }];
             }
         });
-        setIsCartOpen(true); // Open drawer on add
+        setIsCartOpen(true);
     };
 
     const removeFromCart = (itemId) => {
@@ -49,8 +65,16 @@ export const CartProvider = ({ children }) => {
     const updateQuantity = (itemId, type) => {
         setCartItems(prevItems => prevItems.map(item => {
             if (item.id === itemId) {
-                const newQuantity = type === 'inc' ? item.quantity + 1 : item.quantity - 1;
-                return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
+                const availableStock = item.stock !== undefined ? item.stock : 50;
+
+                if (type === 'inc') {
+                    if (item.quantity + 1 > availableStock) {
+                        return { ...item, quantity: availableStock }; // Clamp
+                    }
+                    return { ...item, quantity: item.quantity + 1 };
+                } else {
+                    return item.quantity - 1 > 0 ? { ...item, quantity: item.quantity - 1 } : item;
+                }
             }
             return item;
         }));

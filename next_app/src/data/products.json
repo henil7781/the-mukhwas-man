@@ -24,7 +24,8 @@
       "Flax",
       "Ajwain"
     ],
-    "mood": "Dinner"
+    "mood": "Dinner",
+    "stock": 8
   },
   {
     "id": 2,
@@ -49,7 +50,8 @@
       "Sweet Spices",
       "Menthol"
     ],
-    "mood": "Dinner"
+    "mood": "Dinner",
+    "stock": 50
   },
   {
     "id": 3,
@@ -75,7 +77,8 @@
       "Salt",
       "Sugar"
     ],
-    "mood": "Snack"
+    "mood": "Snack",
+    "stock": 3
   },
   {
     "id": 4,

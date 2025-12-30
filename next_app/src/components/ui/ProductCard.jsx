@@ -2,20 +2,33 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ShoppingBag, Star, Zap, Leaf } from 'lucide-react';
+import { ShoppingBag, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
-import Image from 'next/image';
 
 const ProductCard = ({ product }) => {
-    const { addToCart } = useCart();
+    const { addToCart, cartItems } = useCart();
+
+    // 1. Stock Logic: calculated from props (or default 50)
+    const stock = product.stock !== undefined ? product.stock : 50;
+
+    // 2. Cart Logic: How many does THIS user have?
+    const inCart = cartItems.find(item => item.id === product.id)?.quantity || 0;
+
+    // 3. User Availability: What's actually left for them to buy?
+    const availableForUser = Math.max(0, stock - inCart);
 
     const handleAddToCart = (e) => {
         e.preventDefault();
-        addToCart(product);
+        // Strict check before action
+        if (availableForUser > 0) {
+            addToCart(product);
+        } else if (stock > 0) {
+            alert(`Sorry, you have already added the maximum available quantity (${stock}) for this item.`);
+        }
     };
 
-    // Dynamic Badge Color based on Category
+    // Helper: Determine Badge Color & Label based on Category (Visual Only)
     const getCategoryColor = (cat) => {
         switch (cat) {
             case 'Digestive': return 'bg-amber-100 text-amber-800';
@@ -26,13 +39,32 @@ const ProductCard = ({ product }) => {
         }
     };
 
+    // Helper: Render Stock Badge
+    const renderStockBadge = () => {
+        if (stock === 0) {
+            return (
+                <span className="text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide bg-gray-800 text-white shadow-sm">
+                    Sold Out
+                </span>
+            );
+        }
+        if (stock < 10) {
+            return (
+                <span className="text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide bg-orange-500 text-white shadow-sm animate-pulse">
+                    Only {stock} Left
+                </span>
+            );
+        }
+        return null;
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full"
+            className={`group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full ${stock === 0 ? 'opacity-75 grayscale' : ''}`}
         >
             {/* Image Container */}
             <div className="relative aspect-square overflow-hidden bg-white">
@@ -46,26 +78,39 @@ const ProductCard = ({ product }) => {
                     </div>
                 </Link>
 
-                {/* Category Badge */}
-                <div className="absolute top-3 left-3">
+                {/* Badges Container */}
+                <div className="absolute top-3 left-3 flex flex-col items-start space-y-1">
+                    {/* Category */}
                     <span className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide border border-white/50 backdrop-blur-sm shadow-sm ${getCategoryColor(product.category)}`}>
                         {product.category}
                     </span>
+                    {/* Stock Status */}
+                    {renderStockBadge()}
                 </div>
 
-                {/* Quick Add */}
-                <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
-                    <button
-                        onClick={handleAddToCart}
-                        className="bg-white text-royal-dark p-2.5 rounded-full shadow-lg hover:bg-royal-gold hover:text-white transition-colors border border-gray-100"
-                        title="Add to Cart"
-                    >
-                        <ShoppingBag className="w-4 h-4" />
-                    </button>
-                </div>
+                {/* Quick Add Button (Hover) */}
+                {availableForUser > 0 ? (
+                    <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
+                        <button
+                            onClick={handleAddToCart}
+                            className="bg-white text-royal-dark p-2.5 rounded-full shadow-lg hover:bg-royal-gold hover:text-white transition-colors border border-gray-100"
+                            title="Add to Cart"
+                        >
+                            <ShoppingBag className="w-4 h-4" />
+                        </button>
+                    </div>
+                ) : (
+                    stock > 0 && (
+                        <div className="absolute bottom-3 right-3 opacity-100">
+                            <span className="bg-gray-100 text-xs font-bold px-2 py-1 rounded-full text-gray-500 border border-gray-200 shadow-sm cursor-not-allowed">
+                                Max Limit
+                            </span>
+                        </div>
+                    )
+                )}
             </div>
 
-            {/* Content */}
+            {/* Content Section */}
             <div className="p-4 flex-1 flex flex-col">
                 <Link href={`/product/${product.id}`}>
                     <h3 className="font-serif text-lg font-bold text-royal-dark mb-1 group-hover:text-royal-gold transition-colors truncate">
@@ -78,7 +123,7 @@ const ProductCard = ({ product }) => {
                     Good for: {product.benefit}
                 </div>
 
-                {/* Texture Metrics (Mini) */}
+                {/* Texture/Taste Metrics */}
                 {product.texture && (
                     <div className="flex space-x-2 mb-3 mt-1 opacity-60 group-hover:opacity-100 transition-opacity">
                         <div className="flex items-center space-x-1">
@@ -100,13 +145,15 @@ const ProductCard = ({ product }) => {
                     </div>
                 )}
 
+                {/* Footer: Price & Add Button */}
                 <div className="mt-auto flex justify-between items-center pt-3 border-t border-gray-50">
                     <span className="font-bold text-lg text-royal-green">₹{product.price}</span>
                     <button
                         onClick={handleAddToCart}
-                        className="text-xs font-bold text-royal-gold uppercase tracking-wider hover:underline"
+                        disabled={availableForUser === 0}
+                        className={`text-xs font-bold uppercase tracking-wider transition-colors ${availableForUser === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-royal-gold hover:underline'}`}
                     >
-                        Add
+                        {stock === 0 ? 'Sold Out' : (availableForUser === 0 ? 'Max Added' : 'Add')}
                     </button>
                 </div>
             </div>

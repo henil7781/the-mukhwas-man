@@ -2,11 +2,11 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 const SideCart = () => {
     const { isCartOpen, toggleCart, cartItems, cartTotal, updateQuantity, removeFromCart } = useCart();
-    const navigate = useNavigate();
+    const router = useRouter();
 
     // Nudge Logic: Free sample at ₹999
     const FREE_GIFT_THRESHOLD = 999;
@@ -68,36 +68,52 @@ const SideCart = () => {
                                     <p>Your bag is empty.</p>
                                 </div>
                             ) : (
-                                cartItems.map(item => (
-                                    <motion.div
-                                        layout
-                                        key={item.id}
-                                        className="flex space-x-4 bg-white p-4 rounded-xl shadow-sm border border-gray-50"
-                                    >
-                                        <div className="w-20 h-20 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
-                                            <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1" />
-                                        </div>
-                                        <div className="flex-1 flex flex-col justify-between">
-                                            <div>
-                                                <h3 className="font-serif font-semibold text-royal-dark line-clamp-1">{item.name}</h3>
-                                                <p className="text-xs text-gray-500">{item.category}</p>
+                                cartItems.map(item => {
+                                    const stockLimit = item.stock !== undefined ? item.stock : 50;
+                                    return (
+                                        <motion.div
+                                            layout
+                                            key={item.id}
+                                            className="flex space-x-4 bg-white p-4 rounded-xl shadow-sm border border-gray-50"
+                                        >
+                                            <div className="w-20 h-20 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
+                                                <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1" />
                                             </div>
-                                            <div className="flex justify-between items-center mt-2">
-                                                <div className="flex items-center space-x-3 bg-gray-50 rounded-full px-2 py-1">
-                                                    <button onClick={() => updateQuantity(item.id, 'dec')} className="p-1 hover:text-royal-gold"><Minus className="w-3 h-3" /></button>
-                                                    <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
-                                                    <button onClick={() => updateQuantity(item.id, 'inc')} className="p-1 hover:text-royal-gold"><Plus className="w-3 h-3" /></button>
+                                            <div className="flex-1 flex flex-col justify-between">
+                                                <div>
+                                                    <h3 className="font-serif font-semibold text-royal-dark line-clamp-1">{item.name}</h3>
+                                                    <p className="text-xs text-gray-500">{item.category}</p>
                                                 </div>
-                                                <div className="flex flex-col items-end">
-                                                    <span className="font-bold text-royal-green">₹{item.price * item.quantity}</span>
-                                                    <button onClick={() => removeFromCart(item.id)} className="text-xs text-red-400 hover:text-red-600 mt-1 flex items-center">
-                                                        <Trash2 className="w-3 h-3 mr-1" /> Remove
-                                                    </button>
+                                                <div className="flex justify-between items-center mt-2">
+                                                    <div className="flex flex-col">
+                                                        <div className="flex items-center space-x-3 bg-gray-50 rounded-full px-2 py-1">
+                                                            <button onClick={() => updateQuantity(item.id, 'dec')} className="p-1 hover:text-royal-gold"><Minus className="w-3 h-3" /></button>
+                                                            <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
+                                                            <button
+                                                                onClick={() => updateQuantity(item.id, 'inc')}
+                                                                className="p-1 hover:text-royal-gold disabled:opacity-30 disabled:cursor-not-allowed"
+                                                                disabled={item.quantity >= stockLimit}
+                                                            >
+                                                                <Plus className="w-3 h-3" />
+                                                            </button>
+                                                        </div>
+                                                        {item.quantity >= stockLimit && (
+                                                            <span className="text-[10px] text-orange-600 font-medium mt-1 ml-1 bg-orange-50 px-2 py-1 rounded-md border border-orange-100 block">
+                                                                Max stock reached ({stockLimit})
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex flex-col items-end">
+                                                        <span className="font-bold text-royal-green">₹{item.price * item.quantity}</span>
+                                                        <button onClick={() => removeFromCart(item.id)} className="text-xs text-red-400 hover:text-red-600 mt-1 flex items-center">
+                                                            <Trash2 className="w-3 h-3 mr-1" /> Remove
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </motion.div>
-                                ))
+                                        </motion.div>
+                                    );
+                                })
                             )}
                         </div>
 
@@ -113,7 +129,7 @@ const SideCart = () => {
                                 disabled={cartItems.length === 0}
                                 onClick={() => {
                                     toggleCart();
-                                    navigate('/checkout');
+                                    router.push('/checkout');
                                 }}
                             >
                                 Checkout Securely

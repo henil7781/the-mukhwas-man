@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, Package, Menu, X } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, Package, Menu, X, Star } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const AdminLayout = ({ children, title, subtitle }) => {
@@ -45,6 +45,12 @@ const AdminLayout = ({ children, title, subtitle }) => {
                     className={`flex items-center space-x-3 w-full p-3 rounded-lg font-medium transition-colors ${isActive('/admin/customers') ? 'bg-royal-green/20 text-royal-gold' : 'text-gray-300 hover:bg-white/5'}`}
                 >
                     <Users size={20} /> <span>Customers</span>
+                </button>
+                <button
+                    onClick={() => navigate('/admin/reviews')}
+                    className={`flex items-center space-x-3 w-full p-3 rounded-lg font-medium transition-colors ${isActive('/admin/reviews') ? 'bg-royal-green/20 text-royal-gold' : 'text-gray-300 hover:bg-white/5'}`}
+                >
+                    <Star size={20} /> <span>Reviews</span>
                 </button>
                 <button
                     onClick={() => navigate('/admin/settings')}

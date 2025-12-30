@@ -2,6 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Leaf, Heart, ShieldCheck, Truck } from 'lucide-react';
 
+import CrunchFactor from '../components/home/CrunchFactor';
+import TrustBadges from '../components/home/TrustBadges';
+import Testimonials from '../components/home/Testimonials';
+
 const About = () => {
     return (
         <div className="bg-royal-cream min-h-screen">
@@ -39,7 +43,7 @@ const About = () => {
                     <div>
                         <div className="w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                             <img
-                                src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=2070&auto=format&fit=crop"
+                                src="https://joyspoon.in/cdn/shop/files/Untitled-3-09.jpg?v=1739182729&width=600"
                                 alt="Making Mukhwas"
                                 className="w-full h-full object-cover"
                             />
@@ -55,12 +59,15 @@ const About = () => {
                             <strong>The Mukhwas Man</strong> was born out of a desire to bring that authentic, handcrafted quality back to the modern world. In an era of artificial flavors, we went back to the roots—sourcing premium fennel from Rajasthan, roses from Pushkar, and crafting blends that taste exactly like nostalgia.
                         </p>
                         <div className="pt-4">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png" alt="Signature" className="h-12 opacity-50" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/MS_Dhoni_signature.png/2560px-MS_Dhoni_signature.png" alt="Signature" className="h-20 opacity-50" />
                             <p className="text-sm text-gray-400 mt-2">- Founder, The Mukhwas Man</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <CrunchFactor />
+            <TrustBadges />
+            <Testimonials />
 
             {/* VALUES */}
             <div className="bg-white py-20">

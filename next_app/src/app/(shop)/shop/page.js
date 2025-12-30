@@ -2,35 +2,37 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import products from '@/data/products.json';
+import { mockBackend } from '@/services/mockBackend';
 import ProductCard from '@/components/ui/ProductCard';
 import { Search } from 'lucide-react';
 
 function ShopContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
 
     const categories = ['All', 'Sweet', 'Digestive', 'Healthy', 'Gifting'];
 
+    // Load Data from Mock Backend (User's Requirement)
+    useEffect(() => {
+        // Simulate loading for better UX or just fetch
+        const inventory = mockBackend.getInventory();
+        setProducts(inventory);
+        setLoading(false);
+    }, []);
+
     // Handle URL Search Params
     useEffect(() => {
         const query = searchParams.get('search');
-        const mood = searchParams.get('mood');
 
         if (query) {
             setSearchQuery(query);
             setActiveCategory('All');
         } else {
             setSearchQuery('');
-        }
-
-        if (mood) {
-            // Map mood to category or just use as filter? 
-            // The original code passed it as state. Let's map it if possible, or ignore for now.
-            // If ShopByMood passed ?mood=Dinner, we can handle it.
-            // For simplicity, let's just log it or maybe map.
         }
     }, [searchParams]);
 
@@ -97,9 +99,7 @@ function ShopContent() {
                             key={cat}
                             onClick={() => {
                                 setActiveCategory(cat);
-                                // Optional: clear search if changing category?
-                                // setSearchQuery(''); 
-                                // router.push('/shop');
+                                if (searchQuery) clearSearch(); // Optional: Clear search on category click logic
                             }}
                             className={`px-8 py-3 rounded-full text-sm font-bold tracking-wide transition-all duration-300 border ${activeCategory === cat
                                 ? 'bg-royal-green text-white border-royal-green shadow-lg transform scale-105'
@@ -112,13 +112,17 @@ function ShopContent() {
                 </div>
 
                 {/* Product Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {filteredProducts.map(product => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
+                {loading ? (
+                    <div className="py-20 text-center text-gray-400">Loading products...</div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        {filteredProducts.map(product => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+                )}
 
-                {filteredProducts.length === 0 && (
+                {!loading && filteredProducts.length === 0 && (
                     <div className="text-center py-20 text-gray-500 flex flex-col items-center">
                         <Search className="w-12 h-12 mb-4 text-gray-300" />
                         <p className="text-xl">No products found matching your criteria.</p>

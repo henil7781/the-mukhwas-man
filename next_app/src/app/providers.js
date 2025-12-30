@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { UserProvider } from '@/context/UserContext';
 import { CartProvider } from '@/context/CartContext';
+import { UserProvider } from '@/context/UserContext';
 
 export default function Providers({ children }) {
     return (

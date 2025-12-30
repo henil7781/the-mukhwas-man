@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { emailService } from '../services/emailService';
+import { mockBackend } from '../services/mockBackend';
 
 const UserContext = createContext();
 
@@ -15,7 +17,9 @@ export const UserProvider = ({ children }) => {
         }
     }, []);
 
-    const login = (email, name) => {
+
+
+    const login = async (email, name) => {
         const newUser = {
             name: name || 'Guest User',
             email: email,
@@ -25,26 +29,37 @@ export const UserProvider = ({ children }) => {
         setUser(newUser);
         localStorage.setItem('mukhwas_user', JSON.stringify(newUser));
 
-        // Simulating Email Sending
-        console.log(`
-        ----------------------------------------------------
-        📧 MOCK BACKEND: Sending Welcome Email to ${email}...
-        ----------------------------------------------------
-        Subject: Welcome to the Royal Family, ${newUser.name}! 👑
-        
-        Dear ${newUser.name},
-        
-        Thank you for joining 'The Mukhwas Man'. We are delighted to have you with us.
-        Get ready to explore the finest collection of handcrafted digestive blends.
-        
-        As a royal member, you have unlocked access to exclusive offers.
-        
-        Cheers,
-        The Mukhwas Man Team.
-        ----------------------------------------------------
-        `);
+        // Use EmailJS service
+        await emailService.sendLoginNotification(email, newUser.name);
 
         return true;
+    };
+
+    const signup = async (email, name, password) => {
+        try {
+            const newUser = {
+                name: name,
+                email: email,
+                password: password, // Storing mock password
+                phone: '',
+                avatar: `https://ui-avatars.com/api/?name=${name}&background=064e3b&color=fff`
+            };
+
+            // Register in DB (Will throw if duplicate)
+            mockBackend.registerUser(newUser);
+
+            // Set Session
+            setUser(newUser);
+            localStorage.setItem('mukhwas_user', JSON.stringify(newUser));
+
+            // Send Welcome Email
+            await emailService.sendWelcomeEmail(email, name);
+
+            return true;
+        } catch (error) {
+            alert(error.message);
+            return false;
+        }
     };
 
     const logout = () => {
@@ -59,7 +74,7 @@ export const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, login, logout, updateUser }}>
+        <UserContext.Provider value={{ user, login, signup, logout, updateUser }}>
             {children}
         </UserContext.Provider>
     );

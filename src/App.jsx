@@ -11,6 +11,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import UserProfile from './pages/UserProfile';
 import About from './pages/About';
 
@@ -19,6 +20,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import InventoryManager from './pages/InventoryManager';
 import OrderManager from './pages/OrderManager';
 import CustomerManager from './pages/CustomerManager';
+import ReviewsManager from './pages/ReviewsManager';
 import AdminSettings from './pages/AdminSettings';
 import AdminLogin from './pages/AdminLogin';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -41,6 +43,7 @@ function App() {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
@@ -70,6 +73,11 @@ function App() {
             <Route path="/admin/settings" element={
               <ProtectedRoute>
                 <AdminSettings />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reviews" element={
+              <ProtectedRoute>
+                <ReviewsManager />
               </ProtectedRoute>
             } />
             <Route path="/admin/login" element={<AdminLogin />} />

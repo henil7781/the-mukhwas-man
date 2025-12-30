@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import products from '../data/products.json';
+import { mockBackend } from '../services/mockBackend'; // Use Dynamic Data
 import ProductCard from '../components/ui/ProductCard';
 import { Search } from 'lucide-react';
 
 const Shop = () => {
     const location = useLocation();
+    const [products, setProducts] = useState([]); // Dynamic State
+    const [loading, setLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
 
     const categories = ['All', 'Sweet', 'Digestive', 'Healthy', 'Gifting'];
+
+    // Load Data
+    useEffect(() => {
+        const inventory = mockBackend.getInventory();
+        setProducts(inventory);
+        setLoading(false);
+    }, []);
 
     // Handle URL Search Params
     useEffect(() => {
@@ -86,8 +95,8 @@ const Shop = () => {
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
                             className={`px-8 py-3 rounded-full text-sm font-bold tracking-wide transition-all duration-300 border ${activeCategory === cat
-                                    ? 'bg-royal-green text-white border-royal-green shadow-lg transform scale-105'
-                                    : 'bg-white text-royal-dark border-gray-200 hover:border-royal-gold hover:text-royal-gold'
+                                ? 'bg-royal-green text-white border-royal-green shadow-lg transform scale-105'
+                                : 'bg-white text-royal-dark border-gray-200 hover:border-royal-gold hover:text-royal-gold'
                                 }`}
                         >
                             {cat}
