@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { CartProvider } from './context/CartContext';
 import { UserProvider } from './context/UserContext';
 import UserLayout from './components/layout/UserLayout';
@@ -33,6 +34,7 @@ function App() {
     <CartProvider>
       <UserProvider>
         <Router>
+          <Analytics />
           <Routes>
             {/* Public User Routes (Wrapped in UserLayout) */}
             <Route element={<UserLayout />}>
